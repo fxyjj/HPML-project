@@ -8,8 +8,10 @@ from kivy.vector import Vector
 from kivy.clock import Clock
 from random import randint
 from q_learn import *
+from blog_mtd import *
 from kivy.lang.builder import Builder
 from kivy.uix.boxlayout import BoxLayout
+from random import *
 
 class PongPaddle(Widget):
     score = NumericProperty(0)
@@ -19,13 +21,12 @@ class PongPaddle(Widget):
             vx, vy = ball.velocity
             offset = (ball.center_y - self.center_y) / (self.height / 2)
             bounced = Vector(-1 * vx, vy)
-            vel = bounced * 1.1
+            vel = bounced * 1.0
             ball.velocity = vel.x, vel.y + offset
             return 5
         return 0
-    v_y = NumericProperty(0)
-    def move(self,a:NumericProperty):
-        self.center_y += a
+    def move(self,dt:NumericProperty):
+        self.center_y += dt
 class Marvel(BoxLayout):
 
     def hulk_smash(self):
@@ -54,11 +55,14 @@ class PongGame(Widget):
     ball = ObjectProperty(None)
     player1 = ObjectProperty(None)
     player2 = ObjectProperty(None)
-    qagt = Q_Agent()
-    qagt2 = Q_Agent()
+    
     oldscore = 0
     ori_pos = []
-    def serve_ball(self, vel=(4, 0)):
+    rwad =0
+
+    Q1 = agent(False,'right')
+    Q2 = agent(True,'left')
+    def serve_ball(self, vel=(4*20, 0)):
         self.ball.center = self.center
         self.ball.velocity = vel
         # self.qagt.boundray = self.height
@@ -67,74 +71,72 @@ class PongGame(Widget):
 
 
     def update(self, dt):
-        # call ball.move and other stuff
-        self.qagt.bar_pos = self.player2.pos
-        self.qagt.new_b_pos = self.ball.pos
-        self.qagt2.bar_pos = self.player1.pos
-        self.qagt2.new_b_pos = self.ball.pos
-        a = self.qagt.getAction()
-        a2 = self.qagt2.getAction()
-        # print("out:",a)
-        # print(self.player2.pos,self.ball.pos)
-        self.player2.move(a)
-        # self.player1.move(a2)
-        self.ball.move()
-        r = 0
-        r2 = 0
-        # r = ((self.ball.pos[0]-self.player2.pos[0])**2+(self.ball.pos[1]-self.player2.pos[1])**2)**0.5
-        # print("rewd:",r,self.ball.x, self.player2.x)
-        
-        
-    
-        r2 = self.player1.bounce_ball(self.ball)
-        r = self.player2.bounce_ball(self.ball)
+        # print(self.player2.pos)
+        # print(self.rwad, self.Q.tr_every)
+        # if self.rwad and self.Q.tr_every == 4:
+        #     self.Q.train(self.rwad)
+        #     self.rwad = 0
+        #     self.Q.tr_every = 0
+        # else:
+        #     if self.rwad:
+        #         self.Q.tr_every += 1
+        #         self.Q.label.extend([0 if self.rwad<0 else 1 for _ in range(len(self.Q.actions)-self.Q.tmp)])
+        #         self.Q.tmp = len(self.Q.actions)
+        #         self.rwad = 0
+        #     action = 0
+        #     if self.ball.velocity[0] > 0:
 
-        
-        # bounce off top and bottom
-        if (self.ball.y < 0) or (self.ball.top > self.height):
+        #     # print(self.ball.pos)
+        #         ballPos = [int((itm-1)/10) for itm in self.ball.pos]
+        #         action = self.Q.getObvs(int(self.player1.pos[1]/10),int(self.player2.pos[1]/10),ballPos)
+        ballPos = [int((itm-1)/10) for itm in self.ball.pos]
+        action2 = self.Q1.train([int(self.player1.pos[1]/10),int(self.player2.pos[1]/10),ballPos],float(self.rwad),self.rwad!=0,0)
+        action1 = self.Q2.train([int(self.player1.pos[1]/10),int(self.player2.pos[1]/10),ballPos],float(-self.rwad),self.rwad!=0,0)
+        if self.rwad:
+            self.rwad = 0
+            self.player2.pos = [1575.,500.]
+            self.player1.pos = [0.,500.]
+        # else:
+        self.ball.move()
+        # print(self.ball.pos)
+
+        # bounce of paddles
+        self.player1.bounce_ball(self.ball)
+        self.player2.bounce_ball(self.ball)
+        self.player2.move(action2 if 0 <= self.player2.pos[1] <= 1000 else 0.)
+        self.player1.move(action1 if 0 <= self.player1.pos[1] <= 1000 else 0.)
+
+        # bounce ball off bottom or top
+        if (self.ball.y < self.y) or (self.ball.top > self.top):
             self.ball.velocity_y *= -1
 
-        # bounce off left and right
-        # if (self.ball.x < 0) or (self.ball.right > self.width):
-        #     self.ball.velocity_x *= -1
-
         # went of to a side to score point?
-        # r = 0
         if self.ball.x < self.x:
             self.player2.score += 1
-            self.serve_ball(vel=(4, 0))
-            r2 = -5
-            self.qagt.iters -=1
-            self.qagt.iters -=1
-        elif self.ball.x > self.width:
+            self.rwad = 1
+            self.serve_ball(vel=(4*10, randint(-8,8)))
+        if self.ball.right > self.width:
             self.player1.score += 1
-            r = -5
-            self.serve_ball(vel=(-4, 0))
-            self.qagt.iters -=1
-            self.qagt.iters -=1
-            # r = -5
-        print("rwd: ",r)
-        if self.qagt.iters > 0:
-            self.qagt.q_learn(r)
-        if self.qagt2.iters > 0:
-            self.qagt2.q_learn(r2)
-    
-    def on_touch_move(self, touch):
-        if touch.x < self.width/3:
-            self.player1.center_y = touch.y
-        # if touch.x > self.width - self.width/3:
-        #     self.player2.center_y = touch.y
+            self.rwad = -1
+            # self.Q.train()
+            self.serve_ball(vel=(-4*10, randint(-8,8)))
+       
+    # def on_touch_move(self, touch):
+    #     if touch.x < self.width/3:
+    #         self.player1.center_y = touch.y
+    #     if touch.x > self.width - self.width/3:
+    #         self.player2.center_y = touch.y
 
 
 class PongApp(App):
     def build(self):
         Builder.load_file('pong1.kv')
         game = PongGame()
-        # print("h")
         game.serve_ball()
         Clock.schedule_interval(game.update, 1.0/60.0)
         return game
 
 
 if __name__ == '__main__':
-    PongApp().run()
+        PongApp().run()
+    

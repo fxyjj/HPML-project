@@ -3,13 +3,17 @@
 ## folder structure
 
 - PongGame
-       |__: main.py
-       |__: pong.kv
-       |__: pong1.kv
-       |__: q_learn.py
+
+      - : main.py ----- main GUI file
+      - : pong.kv ----- UI file 
+      - : pong1.kv ------ revised UI file
+      - : q_learn.py -------- Q Agent class
 
 - HPML_project
-       |__: pong_t.py
-       |__: save.p
-       |__:
 
+       - : pong_t.py ------ raw python script for the policy network
+       - : save.p   ---- saved model
+       
+- HPML-project/spinning-up-a-Pong-AI-with-deep-RL(reference: https://github.com/mtrazzi/spinning-up-a-Pong-AI-with-deep-RL)
+
+      - : train.ipynb ------- tensroflow based code 

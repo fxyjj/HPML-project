@@ -1,5 +1,7 @@
 # HMPL_Project
 
+## Introduction
+
 ## folder structure
 
 - PongGame

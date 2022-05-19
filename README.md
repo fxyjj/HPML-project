@@ -53,9 +53,11 @@ And we got following results. It shows that for simply adjust the batch size doe
 ## Commands to execute
 Install module
 
-      ! pip install cmake
-      ! pip install atari-py!
-      ! pip install gym[atari]
+`pip install cmake`
+
+`pip install atari-py!`
+
+`pip install gym[atari]`
       
 Run scripty(set variable 'resume' in pong-from-pixels.py to decide whether load the trained model.)
 
@@ -79,15 +81,26 @@ Due to the time limit, we only obtain result of 100 episodes.
       - : pong1.kv ------ revised UI file
       - : q_learn.py -------- Q Agent class
 
-- HPML_project
+*the UI framework is a python based one  named Kivy, we plan to use these files to explore the genralization ability of the model trined by the policy network since we have more complicated game world in this version of pong game*
 
-       - : pong_t.py ------ raw python script for the policy network
-       - : save.p   ---- saved model
+### code to execute in this file folder
+
+1. `python main.py # run the main game` 
+
+2. pong.kv is the UI configuration file 
+
+3. q_learn.py is the Q-agent class called by the main.py
+
+
+- tmp: some vedio file (not related to the agent code, but used during generate the video when training the agent)
        
-- HPML-project/spinning-up-a-Pong-AI-with-deep-RL
+- Tensorflow_version
 
       - : train.ipynb ------- tensroflow based code, with the modefied model
 
+### code to executed in this floder
+
+`jupyter notebook # open the jupyter notebook server and do the code running`
 
 # Credits
 [Andrej Karpathy blog](http://karpathy.github.io/2016/05/31/rl/)

@@ -87,5 +87,6 @@ Due to the time limit, we only obtain result of 100 episodes.
 
 # Credits
 [Andrej Karpathy blog](http://karpathy.github.io/2016/05/31/rl/)
+
 [Spinning Up a Pong AI With Deep Reinforcement Learning](https://github.com/mtrazzi/spinning-up-a-Pong-AI-with-deep-RL#credits)
 

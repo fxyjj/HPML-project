@@ -10,7 +10,13 @@ Adjust and bugfix the training script from Andrej Karpathy's gist. The training 
 
 We tuned the parameters of model and tried to achieve a faster learning. 
 
-### Neuron Numbers
+Before
+<img width="162" alt="image" src="https://user-images.githubusercontent.com/12693783/169192320-988658f9-1c5b-4dd8-b3ac-a6fad6a2b32e.png">
+
+After
+<img width="163" alt="image" src="https://user-images.githubusercontent.com/12693783/169192324-7b5160c1-22c8-40ef-9e06-0b43b195870b.png">
+
+### Different Neuron Numbers
 We tried different numbers of neurons in the dense layer for 2000 episodes. 
 exp | #1 | #2 | #3 | #4 |
 --- | --- | --- | --- |--- 
@@ -20,7 +26,7 @@ And we got following results. It shows that for the learning speed increase with
 
 <img width="583" alt="image" src="https://user-images.githubusercontent.com/12693783/168729861-222e2169-b9fe-4330-9d18-e8e5b366cc0b.png">
 
-### Batch Size and Learning Rate
+### Different Batch Size and Learning Rate
 We tried different combination of batch size & learning rates for 3000 episodes. 
 
 exp | #1 | #2 | #3 | #4 |
@@ -42,7 +48,24 @@ And we got following results. It shows that for simply adjust the batch size doe
       - : episode_running_means.txt ----- saved running means during training
 
 
+##commands to execute
+Install module
+
+      ! pip install cmake
+      ! pip install atari-py!
+      ! pip install gym[atari]
+      
+Run scripty(set variable 'resume' in pong-from-pixels.py to decide whether load the trained model.)
+
+       python3 pong-from-pixels.py 
+
 # Part 2
+Change the structure of the network to see whether it will improve the perfomance. The structure of the network is shown.
+<img width="911" alt="image" src="https://user-images.githubusercontent.com/12693783/169193598-fb111ef8-f83e-42d6-924d-5ffbcbc1aada.png">
+
+Due to the time limit, we only obtain result of 100 episodes.
+<img width="483" alt="image" src="https://user-images.githubusercontent.com/12693783/169193663-de2ed186-008c-44f5-bb44-406f89a25f73.png">
+
 ## folder structure
 
 - PongGame
@@ -57,6 +80,12 @@ And we got following results. It shows that for simply adjust the batch size doe
        - : pong_t.py ------ raw python script for the policy network
        - : save.p   ---- saved model
        
-- HPML-project/spinning-up-a-Pong-AI-with-deep-RL(reference: https://github.com/mtrazzi/spinning-up-a-Pong-AI-with-deep-RL)
+- HPML-project/spinning-up-a-Pong-AI-with-deep-RL
 
-      - : train.ipynb ------- tensroflow based code 
+      - : train.ipynb ------- tensroflow based code, with the modefied model
+
+
+# Credits
+[Andrej Karpathy blog](http://karpathy.github.io/2016/05/31/rl/)
+[Spinning Up a Pong AI With Deep Reinforcement Learning](https://github.com/mtrazzi/spinning-up-a-Pong-AI-with-deep-RL#credits)
+

@@ -11,10 +11,12 @@ Adjust and bugfix the training script from Andrej Karpathy's gist. The training 
 We tuned the parameters of model and tried to achieve a faster learning. 
 
 Before
-<img width="162" alt="image" src="https://user-images.githubusercontent.com/12693783/169192320-988658f9-1c5b-4dd8-b3ac-a6fad6a2b32e.png">
+![lose_HD]
+(https://user-images.githubusercontent.com/12693783/169195413-231342cd-d90a-497a-b26c-e6eeda896fe2.gif)
 
 After
-<img width="163" alt="image" src="https://user-images.githubusercontent.com/12693783/169192324-7b5160c1-22c8-40ef-9e06-0b43b195870b.png">
+![win_HD]
+(https://user-images.githubusercontent.com/12693783/169195431-5314200e-f046-4298-a427-a5fe48b3d3eb.gif)
 
 ### Different Neuron Numbers
 We tried different numbers of neurons in the dense layer for 2000 episodes. 
@@ -48,7 +50,7 @@ And we got following results. It shows that for simply adjust the batch size doe
       - : episode_running_means.txt ----- saved running means during training
 
 
-##commands to execute
+## Commands to execute
 Install module
 
       ! pip install cmake
@@ -61,9 +63,11 @@ Run scripty(set variable 'resume' in pong-from-pixels.py to decide whether load 
 
 # Part 2
 Change the structure of the network to see whether it will improve the perfomance. The structure of the network is shown.
+
 <img width="911" alt="image" src="https://user-images.githubusercontent.com/12693783/169193598-fb111ef8-f83e-42d6-924d-5ffbcbc1aada.png">
 
 Due to the time limit, we only obtain result of 100 episodes.
+
 <img width="483" alt="image" src="https://user-images.githubusercontent.com/12693783/169193663-de2ed186-008c-44f5-bb44-406f89a25f73.png">
 
 ## folder structure
